@@ -1,2 +1,2 @@
 # whizbot
-A chatbot with Azure Bot Service 
+A Chatbot with Azure Bot Service 
