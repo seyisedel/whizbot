@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Function to clone a Git repository
+clone_repository() {
+    local repository_url="$1"
+    local destination_folder="$2"
+
+    git clone "$repository_url" "$destination_folder"
+}
+
+# Function to create a new branch and switch to it
+create_and_checkout_branch() {
+    local branch_name="$1"
+
+    git checkout -b "$branch_name"
+}
+
+# Function to add and commit changes to the current branch
+commit_changes() {
+    local commit_message="$1"
+
+    git add .
+    git commit -m "$commit_message"
+}
+
+# Function to push changes to the remote repository
+push_changes() {
+    git push origin "$(git symbolic-ref --short HEAD)"
+}
+
+# Main script
+
+# Ask the user for the action (clone, create branch, commit, or exit)
+while true; do
+    echo "Select an action:"
+    echo "1. Clone a Git repository"
+    echo "2. Create and checkout a new branch"
+    echo "3. Commit changes to the current branch"
+    echo "4. Exit"
+
+    read -p "Enter your choice (1/2/3/4): " choice
+
+    case "$choice" in
+        1)
+            read -p "Enter the Git repository URL: " repo_url
+            read -p "Enter the destination folder: " destination
+            clone_repository "$repo_url" "$destination"
+            ;;
+        2)
+            read -p "Enter the name of the new branch: " new_branch
+            create_and_checkout_branch "$new_branch"
+            ;;
+        3)
+            read -p "Enter a commit message: " commit_msg
+            commit_changes "$commit_msg"
+            push_changes
+            ;;
+        4)
+            echo "Exiting the script."
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice. Please select a valid option (1/2/3/4)."
+            ;;
+    esac
+done
